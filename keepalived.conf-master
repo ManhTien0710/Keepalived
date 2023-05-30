@@ -1,0 +1,17 @@
+global_defs {
+        router_id lbc1
+  }
+vrrp_instance VI_3 {
+    state MASTER
+    interface ens33
+    virtual_router_id 60
+    priority 100
+    advert_int 1
+authentication {
+        auth_type PASS
+        auth_pass 12345
+    }
+virtual_ipaddress {
+        172.16.10.200/24 # VIP
+    }
+}

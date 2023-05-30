@@ -1,0 +1,36 @@
+global_defs {
+        script_user root
+}
+
+vrrp_script chk_haproxy {
+        script "/usr/sbin/pidof haproxy"
+        interval 2
+        weight 4
+}
+
+
+vrrp_script chk_nginx {
+        script "killall -0 nginx"
+        interval 2
+        weight 4
+}
+
+vrrp_instance VI_3 {
+    state MASTER
+    interface ens33
+    virtual_router_id 91
+    priority 100
+    advert_int 1
+    authentication {
+        auth_type AH
+        auth_pass B@sebs12
+    }
+    virtual_ipaddress {
+        172.16.10.200/24 dev ens33
+    }
+    track_script
+    {
+       chk_haproxy
+     chk_nginx
+    }
+}
